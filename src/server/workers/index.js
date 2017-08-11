@@ -6,7 +6,7 @@ require('./cycleInitialized').start()
 require('./cycleReflectionStarted').start()
 require('./projectCreated').start()
 require('./surveySubmitted').start()
-require('./userCreated').start()
+require('./memberCreated').start()
 require('./voteSubmitted').start()
 require('./memberPhaseChanged').start()
 

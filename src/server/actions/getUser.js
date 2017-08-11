@@ -8,6 +8,7 @@ const defaultIdmFields = [
 ]
 
 export default function getUser(identifier, options) {
+  console.log('-> Inside getUser function with identifier : ', identifier)
   const {idmFields = defaultIdmFields} = options || {}
   const queryFields = Array.isArray(idmFields) ? idmFields.join(', ') : idmFields
 

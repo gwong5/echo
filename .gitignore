@@ -13,3 +13,4 @@ tmp
 codeship.aes
 LearnersGuild-echo.aes
 herokudeployment.env.decrypted
+.vscode

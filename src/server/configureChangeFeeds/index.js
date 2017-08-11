@@ -6,6 +6,7 @@ import projectCreated from './projectCreated'
 import surveySubmitted from './surveySubmitted'
 import voteSubmitted from './voteSubmitted'
 import memberPhaseChanged from './memberPhaseChanged'
+import memberCreated from './memberCreated'
 
 export default function configureChangeFeeds() {
   const queueService = require('src/server/services/queueService')
@@ -22,6 +23,7 @@ export default function configureChangeFeeds() {
     surveySubmitted(queueService.getQueue('surveySubmitted'))
     voteSubmitted(queueService.getQueue('voteSubmitted'))
     memberPhaseChanged(queueService.getQueue('memberPhaseChanged'))
+    memberCreated(queueService.getQueue('memberCreated'))
   } catch (err) {
     console.error(`ERROR Configuring Change Feeds: ${err.stack ? err.stack : err}`)
     throw (err)
