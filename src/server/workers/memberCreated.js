@@ -12,7 +12,6 @@ export async function processMemberCreated(member) {
   const {handle, chapterId} = await getUser(member.id)
 
   try {
-    // Get chapter.githubTeamId from DB
     const {githubTeamId} = await Chapter.get(chapterId)
 
     if (!githubTeamId) {

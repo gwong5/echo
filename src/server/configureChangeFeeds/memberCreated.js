@@ -15,7 +15,6 @@ function _getFeedProcessor(memberCreatedQueue) {
       attempts: 3,
       backoff: {type: 'fixed', delay: 5000},
     }
-    // TODO: might need more specific input?
     memberCreatedQueue.add(member, jobOpts)
   }
 }
