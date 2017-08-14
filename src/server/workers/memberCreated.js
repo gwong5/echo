@@ -9,13 +9,14 @@ export function start() {
 }
 
 export async function processMemberCreated(member) {
-  const {handle, chapterId} = await getUser(member.id)
+  console.log('MEMBER in Worker: ', member)
+  const {handle} = await getUser(member.id)
 
   try {
-    const {githubTeamId} = await Chapter.get(chapterId)
+    const {githubTeamId} = await Chapter.get(member.chapterId)
 
     if (!githubTeamId) {
-      throw new Error(`No githubTeamId found for chapter with chapterId ${chapterId}`)
+      throw new Error(`No githubTeamId found for chapter with chapterId ${member.chapterId}`)
     }
 
     try {

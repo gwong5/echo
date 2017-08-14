@@ -42,5 +42,19 @@ describe(testContext(__filename), function () {
 
       expect(newMember).to.have.property('id').eq(id)
     })
+ // it('does not replace the given member if their account already exists', async function () {
+    //   this.nockGitHub(this.user)
+    //   await processMemberCreated(this.user)
+    //   const oldMember = await Member.get(this.user.id)
+
+    //   assert.doesNotThrow(async function () {
+    //     await processMemberCreated(this.user)
+    //   }, Error)
+
+    //   await processMemberCreated({...this.user, name: 'new name'})
+    //   const updatedUser = await Member.get(this.user.id)
+
+    //   expect(updatedUser.createdAt).to.eql(oldMember.createdAt)
+    // })
   })
 })

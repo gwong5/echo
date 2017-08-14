@@ -2,6 +2,7 @@
 /* global expect, testContext */
 /* eslint-disable prefer-arrow-callback, no-unused-expressions, max-nested-callbacks */
 import nock from 'nock'
+import {mockIdmGetUser} from 'src/test/helpers'
 
 import config from 'src/config'
 import factory from 'src/test/factories'
@@ -18,11 +19,18 @@ describe(testContext(__filename), function () {
         this.chapter = await factory.create('chapter', {
           inviteCodes: ['test']
         })
-        this.cycle = await factory.create('cycle', {
-          chapterId: this.chapter.id,
-          cycleNumber: 3,
-        })
+
+        // this.cycle = await factory.create('cycle', {
+        //   chapterId: this.chapter.id,
+        //   cycleNumber: 3,
+        // })
+
         this.user = await factory.build('user')
+        
+        this.member = {id: this.user.id, chapterId: this.chapter.id}
+
+        console.log('member in test : ', this.member)
+        
         this.nockGitHub = (user, replyCallback = () => ({})) => {
           useFixture.nockClean()
           nock(config.server.github.baseURL)
@@ -32,44 +40,16 @@ describe(testContext(__filename), function () {
         }
       })
 
-      describe('adds a newly created member to the chapters GitHub Team', function () {
-        it('initializes the member', async function () {
-          this.nockGitHub(this.user)
-          await processMemberCreated(this.user)
-        })
-
-        it('adds the member to the github team', async function () {
+      it('adds the member to the github team', async function () {
+        const user = this.user
           const replyCallback = arg => {
-            expect(arg).to.eql(`/teams/${this.chapter.githubTeamId}/memberships/${this.user.handle}`)
+            expect(arg).to.eql(`/teams/${this.chapter.githubTeamId}/memberships/${user.handle}`)
             return JSON.stringify({})
           }
+          mockIdmGetUser(this.user.id,{handle: this.user.handle})
           this.nockGitHub(this.user, replyCallback)
-          await processMemberCreated(this.user)
+          await processMemberCreated(this.member)
         })
-
-        // it('inserts the new member into the database', async function () {
-        //   this.nockGitHub(this.user)
-        //   await processMemberCreated(this.user)
-        //   const user = await Member.get(this.user.id)
-
-        //   expect(user).to.not.be.null
-        // })
-
-        // it('does not replace the given member if their account already exists', async function () {
-        //   this.nockGitHub(this.user)
-        //   await processMemberCreated(this.user)
-        //   const oldMember = await Member.get(this.user.id)
-
-        //   assert.doesNotThrow(async function () {
-        //     await processMemberCreated(this.user)
-        //   }, Error)
-
-        //   await processMemberCreated({...this.user, name: 'new name'})
-        //   const updatedUser = await Member.get(this.user.id)
-
-        //   expect(updatedUser.createdAt).to.eql(oldMember.createdAt)
-        // })
       })
     })
   })
-})

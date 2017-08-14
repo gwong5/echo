@@ -28,6 +28,7 @@ export async function mockIdmUsersById(userIds = [], overwriteObjs = null, optio
 
 export async function mockIdmGetUser(userId, overwriteObjectAttributes = {}, options = {}) {
   const idmUser = await factory.build('user', {id: userId, ...overwriteObjectAttributes})
+  console.log('IDM BASE URL ', config.server.idm.baseURL)
   nock(config.server.idm.baseURL)
     .post('/graphql')
     .times(isNaN(options.times) ? 1 : options.times)
