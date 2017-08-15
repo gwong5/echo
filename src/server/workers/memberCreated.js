@@ -1,6 +1,6 @@
 import {addUserToTeam} from 'src/server/services/gitHubService'
 import {logRejection} from 'src/server/util'
-import getUser from 'src/server/actions/getUser'
+import getSingleUser from 'src/server/actions/getSingleUser'
 import {Chapter} from 'src/server/services/dataService'
 
 export function start() {
@@ -9,8 +9,7 @@ export function start() {
 }
 
 export async function processMemberCreated(member) {
-  console.log('MEMBER in Worker: ', member)
-  const {handle} = await getUser(member.id)
+  const {handle} = await getSingleUser(member.id)
 
   try {
     const {githubTeamId} = await Chapter.get(member.chapterId)
