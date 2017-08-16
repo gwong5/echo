@@ -1,19 +1,19 @@
-import {GraphQLNonNull} from 'graphql'
-import {InputMember, UserProfile} from 'src/server/graphql/schemas'
+import {GraphQLNonNull, GraphQLString, GraphQLID} from 'graphql'
+import {User} from 'src/server/graphql/schemas'
 import upsertMember from 'src/server/actions/upsertMember'
 import {LGNotAuthorizedError} from 'src/server/util/error'
 import {userCan} from 'src/common/util'
 
 export default {
-  type: UserProfile,
+  type: User,
   args: {
-    values: {type: new GraphQLNonNull(InputMember)}
+    id: {type: new GraphQLNonNull(GraphQLID)},
+    inviteCode: {type: new GraphQLNonNull(GraphQLString)},
   },
-  async resolve(source, {values}, {rootValue: {currentUser}}) {
+  async resolve(source, {id, inviteCode}, {rootValue: {currentUser}}) {
     if (!userCan(currentUser, 'createMember')) {
       throw new LGNotAuthorizedError('You are not authorized to create members.')
     }
-
-    return upsertMember(values)
+    return upsertMember({id, inviteCode})
   }
 }
