@@ -7,9 +7,10 @@ import {resetDB, runGraphQLMutation} from 'src/test/helpers'
 import fields from '../index'
 
 const query = `
-mutation($values: InputMember!) { createMember(values: $values) {
-  id
-  inviteCode
+mutation($id: ID!, $inviteCode: String!) { 
+  createMember(id: $id, inviteCode: $inviteCode) {
+    id
+    chapterId
 }}`
 
 describe(testContext(__filename), function () {
@@ -25,36 +26,22 @@ describe(testContext(__filename), function () {
     })
 
     before(function () {
-      this.createMember = function (InputMember) {
+      this.createMember = function (id, inviteCode) {
         return runGraphQLMutation(
           query,
           fields,
-          {values: InputMember},
+          {id, inviteCode},
           {currentUser: this.adminUser},
         )
       }
     })
     it('creates a new member', async function () {
       const {id} = this.user
-      const values = {id, inviteCode: 'test'}
-      const result = await this.createMember(values)
+      const inviteCode = 'test'
+      const result = await this.createMember(id, inviteCode)
       const newMember = result.data.createMember
 
       expect(newMember).to.have.property('id').eq(id)
     })
- // it('does not replace the given member if their account already exists', async function () {
-    //   this.nockGitHub(this.user)
-    //   await processMemberCreated(this.user)
-    //   const oldMember = await Member.get(this.user.id)
-
-    //   assert.doesNotThrow(async function () {
-    //     await processMemberCreated(this.user)
-    //   }, Error)
-
-    //   await processMemberCreated({...this.user, name: 'new name'})
-    //   const updatedUser = await Member.get(this.user.id)
-
-    //   expect(updatedUser.createdAt).to.eql(oldMember.createdAt)
-    // })
   })
 })
