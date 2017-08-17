@@ -10,6 +10,7 @@ export default new GraphQLObjectType({
 
     return {
       id: {type: new GraphQLNonNull(GraphQLID), description: "The user's UUID"},
+      chapterId: {type: new GraphQLNonNull(GraphQLID), description: "The user's chapter UUID"},
       chapter: {type: Chapter, description: "The user's chapter"},
       createdAt: {type: new GraphQLNonNull(GraphQLDateTime), description: 'When this record was created'},
       updatedAt: {type: new GraphQLNonNull(GraphQLDateTime), description: 'When this record was last updated'},
