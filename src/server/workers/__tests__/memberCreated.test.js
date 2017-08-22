@@ -20,7 +20,7 @@ describe(testContext(__filename), function () {
         })
 
         this.user = await factory.build('user')
-        this.member = {id: this.user.id, chapterId: this.chapter.id}
+        this.member = await factory.create('member', this.user)
 
         this.nockGitHub = (user, replyCallback = () => ({})) => {
           nock(config.server.github.baseURL)
